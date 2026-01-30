@@ -1,14 +1,14 @@
-import React from "react";
-
-const IndexPage = () => {
+export const IndexPage = () => {
   return (
-    <main className="outline">
-      <div className="outline flex justify-center items-center">
-        <h1 className="text-5xl text-justify-center mt-3 pt-3 ">Inventory Management Application</h1>
-        <p className="">Manage Inventory as a user or admin!!!</p>
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+      <div className="w-full max-w-3xl bg-white rounded-xl shadow-lg p-8 text-center">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-2">
+          Inventory Management Application
+        </h1>
+        <p className="text-sm md:text-base text-gray-600">
+          Manage inventory as a user or admin!
+        </p>
       </div>
     </main>
   );
 };
-
-export { IndexPage };

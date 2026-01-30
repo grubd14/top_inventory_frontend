@@ -3,6 +3,8 @@ import { Navbar } from "./components/navbar";
 import { RegisterPage } from "./pages/registerPage.jsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { IndexPage } from "./pages/indexPage.jsx";
+import { LoginPage } from "./pages/loginPage";
+import { NotFoundPage } from "./pages/notfoundPage";
 
 function App() {
   return (
@@ -11,9 +13,11 @@ function App() {
       {/* <IndexPage />*/}
       {/* <RegisterPage/>*/}
       {/* <RegisterPage />*/}
+      <NotFoundPage />
+      {/* <LoginPage />*/}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<IndexPage />}></Route>
+          {/* <Route path="/" element={<IndexPage />}></Route>*/}
         </Routes>
       </BrowserRouter>
     </main>

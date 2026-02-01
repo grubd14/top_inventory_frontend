@@ -3,32 +3,32 @@ export const RegisterForm = () => {
     <div>
       <form>
         {/*username */}
-        <div className="flex flex-col gap-4">
-          <label className="text-[16px] font-semibold" htmlFor="username">
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-semibold" htmlFor="username">
             Username
           </label>
           <input
-            className="border px-2 border-red-500 rounded-md focus:outline-red-700"
+            className=" text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
             type="text"
             placeholder="AngryBird"
             id="username"
           ></input>
         </div>
         {/*password */}
-        <div className="flex flex-col gap-4">
-          <label className="text-[16px] font-semibold" htmlFor="password">
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-semibold" htmlFor="password">
             Password
           </label>
           <input
-            className="border px-2 border-red-500 rounded-md focus:outlineoutline-red-700"
+            className=" text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
             type="password"
             id="password"
             placeholder="Enter password"
           ></input>
         </div>
         {/*database role */}
-        <fieldset className="border">
-          <legend>Select a database role: </legend>
+        <fieldset className="border rounded-lg">
+          <legend className=" text-sm font-semibold">Select a database role: </legend>
           <div className="flex justify-center gap-6">
             <div>
               <label htmlFor="admin" className="">
@@ -48,6 +48,10 @@ export const RegisterForm = () => {
             </div>
           </div>
         </fieldset>
+        <button
+          type="submit"
+          className="w-full bg-red-500 rounded-lg font-medium hover:bg-red-400 transition disabled:opacity-60"
+        ></button>
       </form>
     </div>
   );

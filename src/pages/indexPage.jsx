@@ -1,7 +1,7 @@
 export const IndexPage = () => {
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="w-full max-w-3xl bg-white rounded-xl p-8 text-center">
+    <main className="min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-3xl  rounded-xl p-8 text-center">
         <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-2">
           Inventory Management Application
         </h1>
@@ -10,8 +10,8 @@ export const IndexPage = () => {
         </p>
         <div className=" pt-4 flex  justify-center items-center gap-4">
           {/* <Button></Button>*/}
-          <button title="Register User" className=" rounded-xl h-auto w-auto p-4 text-center hover:bg-blue-400  rounded-1xl border border-sky-800">Register</button>
-          <button title="Register User" className=" rounded-xl p-4 text-center hover:bg-blue-400 w-auto h-auto rounded-1xl border  border-sky-800">Login</button>
+          <button title="Register User" className=" rounded-xl h-auto w-30 p-4 text-center hover:bg-blue-300  rounded-1xl border border-sky-800 cursor-pointer">Register</button>
+          <button title="Login User" className=" rounded-xl p-4 text-center hover:bg-blue-300 w-30 h-auto rounded-1xl border  border-sky-800 cursor-pointer">Login</button>
         </div>
       </div>
     </main>

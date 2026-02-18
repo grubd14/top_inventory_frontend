@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 export const Navbar = () => {
   return (
     <div className="shadow-xl">
@@ -7,16 +9,16 @@ export const Navbar = () => {
             <div className="text-lg font-semibold">Inventory Management</div>
             <ul className="flex space-x-4">
               <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                Home
+                <Link to="/">Home</Link>
               </li>
               <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                Register
+                <Link to="/register">Register</Link>
               </li>
               <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                Login
+                <Link to="/login">Login</Link>
               </li>
               <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                About
+                <Link to="/about">About</Link>
               </li>
             </ul>
           </div>
@@ -25,5 +27,3 @@ export const Navbar = () => {
     </div>
   );
 };
-
-

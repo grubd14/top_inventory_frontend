@@ -48,10 +48,11 @@ export const RegisterForm = () => {
             </div>
           </div>
         </fieldset>
-        <button
+        <Link to={"/category"}><button
           type="submit"
           className="w-full bg-red-500 rounded-lg font-medium hover:bg-red-400 transition disabled:opacity-60"
         ></button>
+        </Link>
       </form>
     </div>
   );

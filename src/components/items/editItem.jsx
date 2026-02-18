@@ -1,4 +1,4 @@
-export const EditItemForm = () => {
+export const EditItem = () => {
   return (
     <div className="flex flex-col justify-center items-center w-auto h-auto mt-4">
       <h1 className="text-4xl font-semibold p-6">Edit Item</h1>

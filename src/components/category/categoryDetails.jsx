@@ -25,10 +25,10 @@ export const CategoryDetails = ({ category }) => {
             Back to Home
           </Link>
           <Link
-            to={`/category/${category.id}/edit`}
+            to={`/category/${category.id}/update`}
             className="bg-orange-400 text-white px-6 py-3 rounded-md hover:bg-orange-500 transition"
           >
-            Edit Category
+            Update Category
           </Link>
           <button
             className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition"

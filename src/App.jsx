@@ -12,6 +12,7 @@ import { NewCategory } from "./components/category/newCategory";
 import { AboutPage } from "./pages/aboutPage";
 import { EditCategory } from "./components/category/editCategory";
 import { CategoryDetails } from "./components/category/categoryDetails";
+import { AddItem } from "./components/items/addItem";
 
 function App() {
   return (
@@ -28,12 +29,13 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/category" element={<CategoryPage />} />
-          <Route path="/category/:id/create" element={<NewCategory/>} />
+          <Route path="/category/create" element={<NewCategory />} />
           <Route path="/category/:id" element={<CategoryDetails/>} />
-          <Route path="/category/:id/edit" element={<EditCategory/>} />
+          <Route path="/category/:id/update" element={<EditCategory/>} />
           <Route path="/items" element={<ItemsDetails/>} />
+          <Route path="/items/add" element={<AddItem/>} />
           <Route path="/items/:id" element={<ItemsDetails/>} />
-          <Route path="/items/:id/edit" element={<EditItem/>} />
+          <Route path="/items/:id/update" element={<EditItem/>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

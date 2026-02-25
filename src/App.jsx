@@ -7,7 +7,7 @@ import { LoginPage } from "./pages/loginPage";
 import { NotFoundPage } from "./pages/notfoundPage";
 import { CategoryPage } from "./pages/categoryPage";
 import { ItemsDetails } from "./components/items/itemDetails";
-import { EditItemForm } from "./components/items/editItem";
+import { EditItem} from "./components/items/editItem.jsx";
 import { NewCategory } from "./components/category/newCategory";
 import { AboutPage } from "./pages/aboutPage";
 import { EditCategory } from "./components/category/editCategory";

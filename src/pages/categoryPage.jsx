@@ -1,12 +1,39 @@
+import { getCategories } from "../api/api";
+import { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 
 export const CategoryPage = () => {
+  //states to store the fetched data
+  const [categories, setCategories] = useState([]);
+  //loading state
+  const [isLoading, setIsLoading] = useState(true);
+  //error state for error message
+  const [error, setError] = useState(null);
+
+  //data fetching
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load categories",
+        );
+      } finally {
+        setIsLoading(false); //stops the spinner on success or failure
+      }
+    }
+    loadCategories();
+  }, []); //use [] to prevent infinite loading
+
   return (
     <div className="p-10  min-h-screen">
       <div className="max-w-6xl mx-auto bg-white shadow-md border rounded-sm p-6">
         {/* Title */}
         <h2 className="text-2xl font-bold text-slate-800 border-b-4 border-blue-500 inline-block mb-6 pb-1">
-          Laptops
+          Categories
         </h2>
 
         {/* Top Action Bar */}
@@ -30,43 +57,39 @@ export const CategoryPage = () => {
           <thead>
             <tr className="text-left border-b bg-gray-50">
               <th className="p-3 font-semibold text-gray-700">Name</th>
-              <th className="p-3 font-semibold text-gray-700">Brand</th>
-              <th className="p-3 font-semibold text-gray-700">Price</th>
-              <th className="p-3 font-semibold text-gray-700">Stock</th>
               <th className="p-3 font-semibold text-gray-700">Description</th>
               <th className="p-3 font-semibold text-gray-700">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b hover:bg-gray-50">
-              <td className="p-3">MacBook Pro 14</td>
-              <td className="p-3">Apple</td>
-              <td className="p-3">$1999.00</td>
-              <td className="p-3">5</td>
-              <td className="p-3 text-sm text-gray-500">
-                Powerful M2 chip with 16GB RAM.
-              </td>
-              <td className="p-3">
-                <div className="grid grid-cols-2 gap-2 w-32">
-                  <Link to={"/category_details"}>
-                    <button className="bg-sky-500 text-white text-xs py-1 px-2 rounded">
-                      Details
+            {categories.map((category) => (
+              <tr key={category.id} className="border-b hover:bg-gray-50">
+                <td className="p-3">{ category.name }</td>
+                <td className="p-3 text-sm text-gray-500">
+                  { category.description }
+                </td>
+                <td className="p-3">
+                  <div className="grid grid-cols-2 gap-2 w-32">
+                    <Link to={`/category/${category.id}`}>
+                      <button className="bg-sky-500 text-white text-xs py-1 px-2 rounded">
+                        Details
+                      </button>
+                    </Link>
+                    <button className="bg-amber-500 text-white text-xs py-1 px-2 rounded">
+                      Edit
                     </button>
-                  </Link>
-                  <button className="bg-amber-500 text-white text-xs py-1 px-2 rounded">
-                    Edit
-                  </button>
-                  <button className="bg-red-500 text-white text-xs py-1 px-2 rounded col-span-1">
-                    Delete
-                  </button>
-                </div>
-              </td>
-            </tr>
+                    <button className="bg-red-500 text-white text-xs py-1 px-2 rounded col-span-1">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
       <div className="flex justify-center  mt-10">
-        <Link to="/new_category">
+        <Link to="/category/create/">
           <button className="bg-emerald-500 text-white px-4 py-2 rounded text-sm font-medium">
             Add New Category
           </button>

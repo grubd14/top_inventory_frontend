@@ -7,7 +7,7 @@ async function handleResponse(response) {
     throw new Error(text || `Request failed with status ${response.status}`);
   }
 
-  const contentType = response.header.get("content-type");
+  const contentType = response.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
     return response.json();
   }
@@ -16,7 +16,12 @@ async function handleResponse(response) {
 
 //category API
 export async function getCategories() {
-  const response = await fetch("${API_BASE}/category", {
+  // Note: CORS response headers must be set on the server.
+  // Browsers will ignore Access-Control-Allow-Origin set by the client.
+  const response = await fetch(`${API_BASE}/category`, {
+    headers: {
+      "Access-Control-Allow-Origin": `http://localhost:3000`,
+    },
     credentials: "include",
   });
   return handleResponse(response);

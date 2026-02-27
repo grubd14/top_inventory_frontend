@@ -16,12 +16,7 @@ async function handleResponse(response) {
 
 //category API
 export async function getCategories() {
-  // Note: CORS response headers must be set on the server.
-  // Browsers will ignore Access-Control-Allow-Origin set by the client.
   const response = await fetch(`${API_BASE}/category`, {
-    headers: {
-      "Access-Control-Allow-Origin": `http://localhost:3000`,
-    },
     credentials: "include",
   });
   return handleResponse(response);
@@ -29,6 +24,14 @@ export async function getCategories() {
 
 //get category with id
 export async function getCategoriesById(id) {
+  const response = await fetch(`${API_BASE}/category/${id}`, {
+    credentials: "include",
+  });
+  return handleResponse(response);
+}
+
+//get items by referencing the category id in the item table
+export async function getItemCategoriesById(id) {
   const response = await fetch(`${API_BASE}/category/${id}`, {
     credentials: "include",
   });
@@ -47,11 +50,11 @@ export async function createCategory(body) {
   });
   return handleResponse(response);
 }
+
 // update category
 export async function updateCategory(body) {
-  //destructuring the body data into two parts
   const { id, ...data } = body;
-  const response = await fetch(`${API_BASE}/${id}/update`, {
+  const response = await fetch(`${API_BASE}/category/${id}/update`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,9 +64,10 @@ export async function updateCategory(body) {
   });
   return handleResponse(response);
 }
+
 // delete category
 export async function deleteCategory(id) {
-  const response = await fetch(`${API_BASE}/${id}`, {
+  const response = await fetch(`${API_BASE}/category/${id}`, {
     method: "DELETE",
     credentials: "include",
   });

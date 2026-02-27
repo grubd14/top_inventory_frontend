@@ -75,12 +75,16 @@ export const CategoryPage = () => {
                         Details
                       </button>
                     </Link>
-                    <button className="bg-amber-500 text-white text-xs py-1 px-2 rounded">
-                      Edit
-                    </button>
-                    <button className="bg-red-500 text-white text-xs py-1 px-2 rounded col-span-1">
-                      Delete
-                    </button>
+                    <Link to = {`/category/${category.id}/update`}>
+                      <button className="bg-amber-500 text-white text-xs py-1 px-2 rounded">
+                        Edit
+                      </button>
+                    </Link>
+                    <Link to={`/category/${category.id}`}>
+                      <button className="bg-red-500 text-white text-xs py-1 px-2 rounded col-span-1">
+                        Delete
+                      </button>
+                    </Link>
                   </div>
                 </td>
               </tr>

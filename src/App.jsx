@@ -2,7 +2,6 @@ import "./App.css";
 import { Navbar } from "./components/navBar";
 import { RegisterPage } from "./pages/registerPage.jsx";
 import { BrowserRouter, Routes, Route} from "react-router";
-import { IndexPage } from "./pages/indexPage.jsx";
 import { LoginPage } from "./pages/loginPage";
 import { NotFoundPage } from "./pages/notfoundPage";
 import { CategoryPage } from "./pages/categoryPage";

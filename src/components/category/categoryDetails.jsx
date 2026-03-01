@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getCategoriesById, getItemCategoriesById } from "/src/api/api";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { getCategoriesById, deleteCategory, deleteItem } from "/src/api/api";
 
-// Present the items details referencing the category id
 export const CategoryDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [category, setCategory] = useState(null);
-  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function loadCategoryDetails() {
       try {
-        if (!id) {
-          throw new Error("Missing category ID in URL");
+        if (!id) throw new Error("Missing category ID in URL");
+
+        const categoryId = Number.parseInt(id, 10);
+        if (!Number.isFinite(categoryId))
+          throw new Error("Invalid category ID");
+
+        const data = await getCategoriesById(categoryId);
+
+        if (data.category && Array.isArray(data.items)) {
+          setCategory({ ...data.category, items: data.items });
+        } else if (data.id && Array.isArray(data.items)) {
+          setCategory(data);
+        } else {
+          throw new Error("Unexpected response structure from server");
         }
-
-        // Fetch category info
-        const categoryData = await getCategoriesById(id);
-        setCategory(categoryData);
-
-        // Fetch items for this category
-        const itemsData = await getItemCategoriesById(id);
-        // itemsData is an array of items
-        setItems(Array.isArray(itemsData) ? itemsData : []);
       } catch (err) {
         setError(
           err instanceof Error
@@ -35,8 +37,45 @@ export const CategoryDetails = () => {
         setIsLoading(false);
       }
     }
+
     loadCategoryDetails();
   }, [id]);
+
+  const handleDeleteCategory = async () => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete "${category.name}"? This cannot be undone.`,
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await deleteCategory(category.id);
+      navigate("/");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to delete category",
+      );
+    }
+  };
+
+  const handleDeleteItem = async (item) => {
+    if (!window.confirm(`Are you sure you want to delete "${item.name}"?`)) {
+      return;
+    }
+
+    try {
+      await deleteItem(item.id);
+      // Remove the deleted item from local state without refetching
+      setCategory((prev) => ({
+        ...prev,
+        items: prev.items.filter((i) => i.id !== item.id),
+      }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete item");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -91,8 +130,8 @@ export const CategoryDetails = () => {
             Update Category
           </Link>
           <button
+            onClick={handleDeleteCategory}
             className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition"
-            // onClick={handleDelete}
           >
             Delete Category
           </button>
@@ -124,25 +163,33 @@ export const CategoryDetails = () => {
           </tr>
         </thead>
         <tbody>
-          {items && items.length > 0 ? (
-            items.map((item) => (
+          {category.items && category.items.length > 0 ? (
+            category.items.map((item) => (
               <tr key={item.id} className="border-b hover:bg-gray-50">
                 <td className="py-2 px-4">{item.name}</td>
                 <td className="py-2 px-4">{item.quantity}</td>
                 <td className="py-2 px-4">{item.description}</td>
-                <td className="py-2 px-4 flex gap-2">
-                  <Link
-                    to={`/item/${item.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    View
-                  </Link>
-                  <Link
-                    to={`/item/${item.id}/edit`}
-                    className="text-orange-600 hover:underline"
-                  >
-                    Edit
-                  </Link>
+                <td className="py-2 px-4">
+                  <div className="flex gap-2">
+                    <Link
+                      to={`/item/${item.id}`}
+                      className="bg-sky-500 text-white text-xs py-1 px-3 rounded hover:bg-sky-600 transition"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      to={`/item/${item.id}/edit`}
+                      className="bg-orange-400 text-white text-xs py-1 px-3 rounded hover:bg-orange-500 transition"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => handleDeleteItem(item)}
+                      className="bg-red-500 text-white text-xs py-1 px-3 rounded hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

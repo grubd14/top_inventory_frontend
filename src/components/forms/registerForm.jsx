@@ -1,58 +1,117 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "/src/api/api";
+
 export const RegisterForm = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    role: "user",
+  });
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setError(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      if (!formData.username.trim() || !formData.password.trim()) {
+        throw new Error("Username and password are required");
+      }
+
+      if (formData.password.length < 6) {
+        throw new Error("Password must be at least 6 characters");
+      }
+
+      const response = await registerUser({
+        username: formData.username,
+        password: formData.password,
+        role: "user",
+      });
+
+      if (response) {
+        console.log("Registration successful:", response);
+        navigate("/category");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed");
+      console.error("Registration error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div>
-      <form>
-        {/*username */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {error}
+          </div>
+        )}
+
+        {/* Username */}
         <div className="flex flex-col gap-1">
           <label className="text-sm font-semibold" htmlFor="username">
             Username
           </label>
           <input
-            className=" text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
+            className="text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
             type="text"
-            placeholder="AngryBird"
+            placeholder="Choose a username"
             id="username"
-          ></input>
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            disabled={isLoading}
+            required
+          />
         </div>
-        {/*password */}
+
+        {/* Password */}
         <div className="flex flex-col gap-1">
           <label className="text-sm font-semibold" htmlFor="password">
             Password
           </label>
           <input
-            className=" text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
+            className="text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
             type="password"
             id="password"
-            placeholder="Enter password"
-          ></input>
+            name="password"
+            placeholder="Enter a password (min 6 characters)"
+            value={formData.password}
+            onChange={handleChange}
+            disabled={isLoading}
+            required
+          />
         </div>
-        {/*database role */}
-        <fieldset className="border rounded-lg">
-          <legend className=" text-sm font-semibold">Select a database role: </legend>
-          <div className="flex justify-center gap-6">
-            <div>
-              <label htmlFor="admin" className="">
-                Admin
-              </label>
-              <input
-                type="radio"
-                id="admin"
-                name="role"
-                value="admin"
-                className=""
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="user">User</label>
-              <input type="radio" id="user" name="role" value="user"></input>
-            </div>
-          </div>
-        </fieldset>
-        <Link to={"/category"}><button
+
+        {/* Info Message */}
+        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-3 py-2 rounded text-sm">
+          You are registering as a regular user. Administrators must be assigned
+          by the system.
+        </div>
+
+        {/* Submit Button */}
+        <button
           type="submit"
-          className="w-full bg-red-500 rounded-lg font-medium hover:bg-red-400 transition disabled:opacity-60"
-        ></button>
-        </Link>
+          disabled={isLoading}
+          className="w-full bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {isLoading ? "Registering..." : "Register"}
+        </button>
       </form>
     </div>
   );

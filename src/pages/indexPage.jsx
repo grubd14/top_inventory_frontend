@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 export const IndexPage = () => {
   return (
@@ -13,11 +13,24 @@ export const IndexPage = () => {
         <div className=" pt-4 flex  justify-center items-center gap-4">
           {/* <Button></Button>*/}
           {/* <Link to="/register"  title="Register Here" className=" rounded-xl h-auto w-30 p-4 text-center hover:bg-blue-300  rounded-1xl border border-sky-800 cursor-pointer">Register</Link>*/}
-          <Link to="/register"><button title="Register Here" className="rounded-xl h-auto w-30 p-4 text-center hover:bg-blue-300  rounded-1xl border border-sky-800 cursor-pointer">Register</button></Link>
-          <Link to="/login"><button title="Login User" className=" rounded-xl p-4 text-center hover:bg-blue-300 w-30 h-auto rounded-1xl border  border-sky-800 cursor-pointer">Login</button></Link>
+          <Link to="/register">
+            <button
+              title="Register Here"
+              className="rounded-xl h-auto w-30 p-4 text-center hover:bg-blue-300  rounded-1xl border border-sky-800 cursor-pointer"
+            >
+              Register
+            </button>
+          </Link>
+          <Link to="/login">
+            <button
+              title="Login User"
+              className=" rounded-xl p-4 text-center hover:bg-blue-300 w-30 h-auto rounded-1xl border  border-sky-800 cursor-pointer"
+            >
+              Login
+            </button>
+          </Link>
         </div>
       </div>
     </main>
   );
 };
-

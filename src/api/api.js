@@ -7,11 +7,17 @@ async function handleResponse(response) {
     throw new Error(text || `Request failed with status ${response.status}`);
   }
 
+  // 204 No Content or empty body — nothing to parse
+  if (response.status === 204) return null;
+
+  const text = await response.text();
+  if (!text) return null;
+
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
-    return response.json();
+    return JSON.parse(text);
   }
-  return response.text();
+  return text;
 }
 
 //category API
@@ -31,12 +37,12 @@ export async function getCategoriesById(id) {
 }
 
 //get items by referencing the category id in the item table
-export async function getItemCategoriesById(id) {
-  const response = await fetch(`${API_BASE}/category/${id}`, {
-    credentials: "include",
-  });
-  return handleResponse(response);
-}
+// export async function getItemCategoriesById(id) {
+//   const response = await fetch(`${API_BASE}/category/${id}`, {
+//     credentials: "include",
+//   });
+//   return handleResponse(response);
+// }
 
 // create category
 export async function createCategory(body) {
@@ -84,7 +90,7 @@ export async function getItems() {
 }
 
 //get item by id
-export async function getItem(id) {
+export async function getItemById(id) {
   const response = await fetch(`${API_BASE}/item/${id}`, {
     credentials: "include",
   });

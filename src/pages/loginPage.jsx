@@ -1,9 +1,10 @@
 import { LoginForm } from "../components/forms/loginForm.jsx";
+import { Link } from "react-router-dom";
 
 export const LoginPage = () => {
   return (
     <main>
-      <div className="  h-full w-full flex justify-center items-center">
+      <div className="h-full w-full flex justify-center items-center min-h-screen">
         <div className="border-2 min-h-140 min-w-140 rounded-md shadow-md p-3 m-3 border-gray-600">
           <h1 className="text-3xl text-center tracking-wider font-bold">
             Login User
@@ -13,12 +14,15 @@ export const LoginPage = () => {
           </p>
           <LoginForm />
 
-          <div className="mt-2">
+          <div className="mt-4">
             <p className="text-center">
-              Not an registered user?{" "}
-              <span className="text-red-400 italic font-semibold cursor-pointer">
-                Register
-              </span>
+              Not a registered user?{" "}
+              <Link
+                to="/register"
+                className="text-red-400 italic font-semibold hover:text-red-600 cursor-pointer"
+              >
+                Register here
+              </Link>
             </p>
           </div>
         </div>

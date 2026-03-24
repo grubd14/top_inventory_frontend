@@ -8,7 +8,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: Deploy frontend using SSH
-           uses: appleboy/ssh-action
+           uses: appleboy/ssh-action@v1.2.5
            with:
               host: ${{ secrets.VPS_ADDRESS }}
               username: ${{ secrets.SSH_USERNAME }}

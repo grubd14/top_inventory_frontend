@@ -11,7 +11,12 @@ jobs:
            uses: appleboy/ssh-action
            with:
               host: ${{ secrets.VPS_ADDRESS }}
-              username: ${{ secrets.SSH_USERNAME}}
-              key: ${{secrets.SSH_PRIVATE_KEY}}
+              username: ${{ secrets.SSH_USERNAME }}
+              key: ${{secrets.SSH_PRIVATE_KEY }}
               script: |
+                  cd inventory_project/top_inventory_frontend/
+                  git fetch 
+                  git reset --hard origin/main
+                  docker compose up -d --build
+                  
                   

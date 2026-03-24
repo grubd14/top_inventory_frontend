@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+// const API_BASE = import.meta.env.VITE_API_URL ?? "/api";
+const API_BASE = "/api";
 
 //function to handle the response from the fetch
 async function handleResponse(response) {

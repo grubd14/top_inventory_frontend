@@ -18,4 +18,3 @@ networks:
 
 volumes:
   frontend_dist:
-     external: true

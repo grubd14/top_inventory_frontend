@@ -1,11 +1,51 @@
-// const API_BASE = import.meta.env.VITE_API_URL ?? "/api";
-const API_BASE = "/api";
+const API_BASE = (
+  import.meta.env.VITE_API_URL ?? "http://localhost:3000/api"
+).replace(/\/$/, "");
+
+function errorMessageFromHtml(text) {
+  const preMatch = text.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);
+  if (!preMatch) return null;
+  let message = preMatch[1]
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/<[^>]+>/g, "")
+    .trim();
+  const atIdx = message.search(/\s+at\s+/);
+  if (atIdx !== -1) message = message.slice(0, atIdx).trim();
+  return message || null;
+}
 
 //function to handle the response from the fetch
 async function handleResponse(response) {
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(text || `Request failed with status ${response.status}`);
+    const ct = response.headers.get("content-type") || "";
+
+    if (ct.includes("application/json") && text) {
+      try {
+        const body = JSON.parse(text);
+        if (body && typeof body === "object" && body.error != null) {
+          throw new Error(String(body.error));
+        }
+      } catch (e) {
+        if (e instanceof SyntaxError) {
+          /* not JSON despite header */
+        } else {
+          throw e;
+        }
+      }
+    }
+
+    const fromHtml = errorMessageFromHtml(text);
+    if (fromHtml) {
+      throw new Error(fromHtml);
+    }
+
+    throw new Error(
+      text?.slice(0, 400) || `Request failed with status ${response.status}`,
+    );
   }
 
   // 204 No Content or empty body — nothing to parse
@@ -16,7 +56,11 @@ async function handleResponse(response) {
 
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
-    return JSON.parse(text);
+    try {
+      return JSON.parse(text);
+    } catch {
+      throw new Error("Invalid JSON response from server");
+    }
   }
   return text;
 }

@@ -1,7 +1,13 @@
 import "./App.css";
 import { Navbar } from "./components/navBar";
 import { RegisterPage } from "./pages/registerPage.jsx";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useParams,
+} from "react-router-dom";
 import { LoginPage } from "./pages/loginPage";
 import { NotFoundPage } from "./pages/notfoundPage";
 import { CategoryPage } from "./pages/categoryPage";
@@ -20,6 +26,11 @@ function isLoggedIn() {
   } catch {
     return false;
   }
+}
+
+function RedirectItemEdit() {
+  const { id } = useParams();
+  return <Navigate to={`/item/${id}/edit`} replace />;
 }
 
 function App() {
@@ -45,7 +56,7 @@ function App() {
         <Route path="/item/add" element={<AddItem />} />
         <Route path="/item/:id" element={<ItemsDetails />} />
         <Route path="/item/:id/edit" element={<EditItem />} />
-        <Route path="/item/:id/update" element={<EditItem />} />
+        <Route path="/item/:id/update" element={<RedirectItemEdit />} />
 
         {/* Auth Routes */}
         <Route path="/register" element={<RegisterPage />} />

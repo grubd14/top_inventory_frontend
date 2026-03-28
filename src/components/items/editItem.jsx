@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getItemById, updateItem, getCategories } from "/src/api/api";
 
@@ -10,9 +10,10 @@ export const EditItem = () => {
     name: "",
     description: "",
     quantity: "",
-    price: "",
     category_id: "",
   });
+  /** Preserved from the server so updates do not clear price in the DB. */
+  const priceRef = useRef(0);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -37,11 +38,14 @@ export const EditItem = () => {
 
         if (!item) throw new Error("Item not found");
 
+        priceRef.current =
+          item.price !== undefined && item.price !== null
+            ? Number(item.price)
+            : 0;
         setFormData({
           name: item.name ?? "",
           description: item.description ?? "",
           quantity: item.quantity ?? "",
-          price: item.price ?? "",
           category_id: item.category_id ?? "",
         });
 
@@ -87,7 +91,7 @@ export const EditItem = () => {
         name: formData.name.trim(),
         description: formData.description.trim(),
         quantity: Number.parseInt(formData.quantity, 10),
-        price: formData.price !== "" ? parseFloat(formData.price) : 0,
+        price: priceRef.current,
         category_id: Number.parseInt(formData.category_id, 10),
       });
 
@@ -172,25 +176,6 @@ export const EditItem = () => {
                 onChange={handleChange}
                 disabled={isSaving}
                 required
-              />
-            </div>
-
-            {/* Price */}
-            <div>
-              <label htmlFor="price" className="block font-medium mb-2">
-                Price:
-              </label>
-              <input
-                id="price"
-                name="price"
-                type="number"
-                step="0.01"
-                min="0"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="0.00"
-                value={formData.price}
-                onChange={handleChange}
-                disabled={isSaving}
               />
             </div>
 

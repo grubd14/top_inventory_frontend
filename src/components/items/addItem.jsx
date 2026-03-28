@@ -9,21 +9,19 @@ export const AddItem = () => {
     name: "",
     description: "",
     quantity: "",
-    price: "",
     category_id: categoryId || "",
   });
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     async function loadCategories() {
       try {
         const data = await getCategories();
-        setCategories(data);
-      } catch (err) {
-        console.error("Failed to load categories:", err);
+        setCategories(Array.isArray(data) ? data : []);
+      } catch {
+        setCategories([]);
       }
     }
     loadCategories();
@@ -50,64 +48,60 @@ export const AddItem = () => {
       if (!formData.category_id) {
         throw new Error("Please select a category");
       }
-      if (!formData.quantity || formData.quantity < 0) {
-        throw new Error("Quantity must be a valid number");
+      const qty = Number.parseInt(formData.quantity, 10);
+      if (!Number.isFinite(qty) || qty < 0) {
+        throw new Error("Quantity must be a valid non-negative number");
       }
 
       const itemData = {
         name: formData.name.trim(),
         description: formData.description.trim(),
-        quantity: parseInt(formData.quantity, 10),
-        category_id: parseInt(formData.category_id, 10),
+        quantity: qty,
+        category_id: Number.parseInt(formData.category_id, 10),
+        price: 0,
       };
 
-      const response = await addItem(itemData);
-      console.log("Item added successfully:", response);
+      await addItem(itemData);
 
-      setSuccess(true);
-      // Navigate back to category or home after success
       if (categoryId) {
         navigate(`/category/${categoryId}`);
       } else {
-        navigate("/");
+        navigate("/item");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to add item");
-      console.error("Add item error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-auto h-auto mt-4 mb-8">
-      <h1 className="text-4xl font-semibold p-6">Add New Item</h1>
-      <div className="h-auto w-full max-w-md shadow-2xl">
-        <form onSubmit={handleSubmit} className="h-auto w-lg">
-          <div className="p-5 space-y-4">
+    <div className="flex min-h-screen flex-col items-center bg-slate-50 px-4 py-10">
+      <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-800">
+        Add item
+      </h1>
+      <div className="w-full max-w-md rounded-2xl border border-slate-200/80 bg-white p-6 shadow-lg shadow-slate-200/50">
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <div
+                className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800"
+                role="alert"
+              >
                 {error}
               </div>
             )}
 
-            {success && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                Item added successfully!
-              </div>
-            )}
-
-            {/* Item Name */}
             <div>
-              <label htmlFor="itemName" className="block font-medium mb-2">
-                Item Name: *
+              <label htmlFor="itemName" className="mb-2 block text-sm font-medium text-slate-700">
+                Item name <span className="text-red-500">*</span>
               </label>
               <input
                 id="itemName"
                 name="name"
                 type="text"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter item name"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+                placeholder="Name"
                 value={formData.name}
                 onChange={handleChange}
                 disabled={isLoading}
@@ -115,16 +109,18 @@ export const AddItem = () => {
               />
             </div>
 
-            {/* Description */}
             <div>
-              <label htmlFor="description" className="block font-medium mb-2">
-                Description:
+              <label
+                htmlFor="description"
+                className="mb-2 block text-sm font-medium text-slate-700"
+              >
+                Description
               </label>
               <textarea
                 id="description"
                 name="description"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter item description"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+                placeholder="Optional"
                 rows={3}
                 value={formData.description}
                 onChange={handleChange}
@@ -132,16 +128,15 @@ export const AddItem = () => {
               />
             </div>
 
-            {/* Quantity */}
             <div>
-              <label htmlFor="quantity" className="block font-medium mb-2">
-                Quantity: *
+              <label htmlFor="quantity" className="mb-2 block text-sm font-medium text-slate-700">
+                Quantity <span className="text-red-500">*</span>
               </label>
               <input
                 id="quantity"
                 name="quantity"
                 type="number"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
                 placeholder="0"
                 min="0"
                 value={formData.quantity}
@@ -151,21 +146,23 @@ export const AddItem = () => {
               />
             </div>
 
-            {/* Category */}
             <div>
-              <label htmlFor="category_id" className="block font-medium mb-2">
-                Category: *
+              <label
+                htmlFor="category_id"
+                className="mb-2 block text-sm font-medium text-slate-700"
+              >
+                Category <span className="text-red-500">*</span>
               </label>
               <select
                 id="category_id"
                 name="category_id"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
                 value={formData.category_id}
                 onChange={handleChange}
                 disabled={isLoading}
                 required
               >
-                <option value="">-- Select a category --</option>
+                <option value="">Select a category</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -174,18 +171,17 @@ export const AddItem = () => {
               </select>
             </div>
 
-            {/* Buttons */}
             <div className="flex gap-3 pt-2">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 bg-green-500 text-white px-4 py-2 rounded font-medium hover:bg-green-600 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                className="flex-1 rounded-lg bg-emerald-600 px-4 py-2.5 font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isLoading ? "Saving..." : "Save Item"}
+                {isLoading ? "Saving…" : "Save item"}
               </button>
               <Link
-                to={categoryId ? `/category/${categoryId}` : "/"}
-                className="flex-1 bg-gray-500 text-white px-4 py-2 rounded font-medium hover:bg-gray-600 transition text-center"
+                to={categoryId ? `/category/${categoryId}` : "/category"}
+                className="flex flex-1 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50"
               >
                 Cancel
               </Link>

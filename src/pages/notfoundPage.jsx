@@ -2,20 +2,20 @@ import { Link } from "react-router-dom";
 
 export const NotFoundPage = () => {
   return (
-    <main className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <div className="flex flex-col items-center text-center gap-6">
+    <main className="flex min-h-screen w-full items-center justify-center bg-slate-50 px-4">
+      <div className="flex flex-col items-center gap-6 text-center">
         <div>
-          <h1 className="text-6xl font-bold text-gray-800 mb-2">404</h1>
-          <p className="text-2xl font-semibold text-gray-700">Page Not Found</p>
+          <h1 className="mb-2 text-6xl font-bold text-slate-800">404</h1>
+          <p className="text-2xl font-semibold text-slate-700">Page not found</p>
         </div>
-        <p className="text-gray-600 text-lg max-w-md">
-          Sorry, the page you're looking for doesn't exist. It might have been
-          moved or deleted.
+        <p className="max-w-md text-lg text-slate-600">
+          That URL does not match any page. Check the address or go back home.
         </p>
-        <Link to="/">
-          <button className="bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition">
-            Go Back to Home
-          </button>
+        <Link
+          to="/"
+          className="rounded-lg bg-sky-600 px-6 py-3 font-medium text-white transition hover:bg-sky-700"
+        >
+          Back to home
         </Link>
       </div>
     </main>

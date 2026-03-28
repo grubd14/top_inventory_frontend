@@ -17,13 +17,12 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Re-read localStorage on every route change so the navbar
-  // always reflects the current login state (e.g. after login/logout)
   useEffect(() => {
-    setUser(getStoredUser());
+    queueMicrotask(() => {
+      setUser(getStoredUser());
+    });
   }, [location]);
 
-  // Also keep in sync if localStorage changes in another tab
   useEffect(() => {
     function onStorage(e) {
       if (e.key === "user") {
@@ -34,66 +33,77 @@ export const Navbar = () => {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-    } catch (err) {
-      console.error("Logout request failed:", err);
-    } finally {
-      localStorage.removeItem("user");
-      setUser(null);
-      navigate("/");
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/", { replace: true });
+    void logoutUser().catch(() => {
+      /* session already cleared locally */
+    });
   };
 
+  const linkClass =
+    "rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900";
+
   return (
-    <div className="shadow-xl">
-      <div className="w-auto mx-auto">
-        <nav className="bg-white text-black px-4 py-3">
-          <div className="flex items-center justify-between">
-            <Link
-              to={user ? "/category" : "/"}
-              className="text-lg font-semibold hover:text-blue-600"
-            >
-              Inventory Management
+    <header className="sticky top-0 z-10 border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-sm">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+        <Link
+          to={user ? "/category" : "/"}
+          className="text-lg font-semibold tracking-tight text-slate-900 transition hover:text-sky-700"
+        >
+          Inventory
+        </Link>
+        <ul className="flex flex-wrap items-center justify-end gap-1 sm:gap-2">
+          <li>
+            <Link to={user ? "/category" : "/"} className={linkClass}>
+              Home
             </Link>
-            <ul className="flex space-x-4 items-center">
-              <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                <Link to={user ? "/category" : "/"}>Home</Link>
+          </li>
+          {user && (
+            <>
+              <li>
+                <Link to="/item" className={linkClass}>
+                  Items
+                </Link>
               </li>
-              {user ? (
-                <>
-                  <li className="text-sm px-2 py-1">
-                    <span className="font-semibold">
-                      Welcome, {user.username}
-                    </span>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleLogout}
-                      className="bg-red-500 text-white rounded px-3 py-1 text-sm font-medium hover:bg-red-600 transition"
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                    <Link to="/register">Register</Link>
-                  </li>
-                  <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                    <Link to="/login">Login</Link>
-                  </li>
-                </>
-              )}
-              <li className="hover:bg-blue-300 rounded px-2 py-1 cursor-pointer">
-                <Link to="/about">About</Link>
+              <li className="hidden px-2 text-sm text-slate-500 sm:block">
+                <span className="font-medium text-slate-700">
+                  {user.username}
+                </span>
               </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </div>
+              <li>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+                >
+                  Log out
+                </button>
+              </li>
+            </>
+          )}
+          {!user && (
+            <>
+              <li>
+                <Link to="/register" className={linkClass}>
+                  Register
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className={linkClass}>
+                  Log in
+                </Link>
+              </li>
+            </>
+          )}
+          <li>
+            <Link to="/about" className={linkClass}>
+              About
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
   );
 };

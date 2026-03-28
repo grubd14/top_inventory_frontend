@@ -3,28 +3,27 @@ import { Link } from "react-router-dom";
 
 export const RegisterPage = () => {
   return (
-    <main>
-      <div className="h-full w-full flex justify-center items-center min-h-screen">
-        <div className="border-2 min-h-140 min-w-140 rounded-md shadow-md p-3 m-3 border-gray-600">
-          <h1 className="text-3xl text-center tracking-wider font-bold">
-            Register User
+    <main className="min-h-screen bg-slate-50 px-4 py-12">
+      <div className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-md items-center justify-center">
+        <div className="w-full rounded-2xl border border-slate-200/80 bg-white p-8 shadow-lg shadow-slate-200/50">
+          <h1 className="text-center text-3xl font-bold tracking-tight text-slate-800">
+            Create an account
           </h1>
-          <p className="font-light pt-2 text-center mt-1">
-            To register an account fill the form below:
+          <p className="mt-2 text-center text-sm text-slate-600">
+            Choose a username and password to get started.
           </p>
-          <RegisterForm />
-
-          <div className="mt-4">
-            <p className="text-center">
-              Already a registered user?{" "}
-              <Link
-                to="/login"
-                className="text-red-400 italic font-semibold hover:text-red-600 underline"
-              >
-                Login here
-              </Link>
-            </p>
+          <div className="mt-6">
+            <RegisterForm />
           </div>
+          <p className="mt-6 text-center text-sm text-slate-600">
+            Already registered?{" "}
+            <Link
+              to="/login"
+              className="font-semibold text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700"
+            >
+              Log in
+            </Link>
+          </p>
         </div>
       </div>
     </main>

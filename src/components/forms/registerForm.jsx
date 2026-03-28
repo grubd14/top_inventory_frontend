@@ -42,12 +42,15 @@ export const RegisterForm = () => {
       });
 
       if (response) {
-        console.log("Registration successful:", response);
+        const userToStore = response.user ?? {
+          username: formData.username,
+          role: "user",
+        };
+        localStorage.setItem("user", JSON.stringify(userToStore));
         navigate("/category");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
-      console.error("Registration error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +71,7 @@ export const RegisterForm = () => {
             Username
           </label>
           <input
-            className="text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
             type="text"
             placeholder="Choose a username"
             id="username"
@@ -86,7 +89,7 @@ export const RegisterForm = () => {
             Password
           </label>
           <input
-            className="text-sm border px-3 py-2 focus:outline-1 border-gray-300 rounded-lg focus:ring-red-500 transition"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
             type="password"
             id="password"
             name="password"
@@ -108,7 +111,7 @@ export const RegisterForm = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full rounded-lg bg-sky-600 py-2.5 font-medium text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isLoading ? "Registering..." : "Register"}
         </button>

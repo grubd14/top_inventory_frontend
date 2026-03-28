@@ -44,7 +44,7 @@ export const CategoryDetails = () => {
   const handleDeleteCategory = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to delete "${category.name}"? This cannot be undone.`,
+        `Delete "${category.name}" and all items in it? This cannot be undone.`,
       )
     ) {
       return;
@@ -52,7 +52,7 @@ export const CategoryDetails = () => {
 
     try {
       await deleteCategory(category.id);
-      navigate("/");
+      navigate("/category");
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to delete category",
@@ -79,18 +79,23 @@ export const CategoryDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-50 min-h-screen p-8">
-        <div className="text-center text-lg text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-slate-50 p-8">
+        <div className="text-center text-lg text-slate-600">Loading…</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-gray-50 min-h-screen p-8">
-        <div className="text-red-600 text-lg mb-4">Error: {error}</div>
-        <Link to="/" className="text-blue-600 underline">
-          Back to Home
+      <div className="min-h-screen bg-slate-50 p-8">
+        <div className="mb-4 text-lg text-red-700" role="alert">
+          {error}
+        </div>
+        <Link
+          to="/category"
+          className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700"
+        >
+          Back to categories
         </Link>
       </div>
     );
@@ -98,66 +103,72 @@ export const CategoryDetails = () => {
 
   if (!category) {
     return (
-      <div className="bg-gray-50 min-h-screen p-8">
-        <div className="text-gray-700 text-lg mb-4">Category not found.</div>
-        <Link to="/" className="text-blue-600 underline">
-          Back to Home
+      <div className="min-h-screen bg-slate-50 p-8">
+        <div className="mb-4 text-lg text-slate-700">Category not found.</div>
+        <Link
+          to="/category"
+          className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700"
+        >
+          Back to categories
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen p-8">
-      <div className="flex flex-col items-start">
-        <h1 className="text-4xl font-bold text-center w-full mb-6">
-          {category.name} Details
+    <div className="min-h-screen bg-slate-50 p-8">
+      <div className="mx-auto flex max-w-6xl flex-col items-start">
+        <h1 className="mb-2 w-full text-center text-3xl font-bold tracking-tight text-slate-800">
+          {category.name}
         </h1>
-        <p className="text-lg font-semibold mb-4">
-          <span className="font-bold">Description:</span> {category.description}
+        <p className="mb-8 w-full text-center text-slate-600">
+          {category.description || "No description"}
         </p>
-        <div className="flex gap-4 mb-8 flex-wrap">
+        <div className="mb-8 flex w-full flex-wrap gap-3">
           <Link
-            to="/"
-            className="bg-gray-400 text-white px-6 py-3 rounded-md hover:bg-gray-500 transition"
+            to="/category"
+            className="rounded-lg bg-slate-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700"
           >
-            Back to Home
+            All categories
           </Link>
           <Link
             to={`/category/${category.id}/update`}
-            className="bg-orange-400 text-white px-6 py-3 rounded-md hover:bg-orange-500 transition"
+            className="rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-amber-600"
           >
-            Update Category
+            Edit category
           </Link>
           <button
+            type="button"
             onClick={handleDeleteCategory}
-            className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition"
+            className="rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-700"
           >
-            Delete Category
+            Delete category
           </button>
           <Link
             to={`/category/${category.id}/new-item`}
-            className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition"
+            className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700"
           >
-            Add New Item
+            Add item
           </Link>
         </div>
-      </div>
 
-      <h2 className="text-3xl font-bold mb-4">Items in this Category</h2>
-      <table className="w-full bg-white rounded-md shadow-sm">
+        <h2 className="mb-4 w-full text-2xl font-bold text-slate-800">
+          Items in this category
+        </h2>
+        <div className="w-full overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
+          <table className="w-full">
         <thead>
-          <tr className="border-b">
-            <th className="py-3 px-4 text-left font-semibold text-gray-700">
+          <tr className="border-b border-slate-200 bg-slate-100/80">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700">
               Name
             </th>
-            <th className="py-3 px-4 text-left font-semibold text-gray-700">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700">
               Quantity
             </th>
-            <th className="py-3 px-4 text-left font-semibold text-gray-700">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700">
               Description
             </th>
-            <th className="py-3 px-4 text-left font-semibold text-gray-700">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700">
               Actions
             </th>
           </tr>
@@ -165,27 +176,28 @@ export const CategoryDetails = () => {
         <tbody>
           {category.items && category.items.length > 0 ? (
             category.items.map((item) => (
-              <tr key={item.id} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-4">{item.name}</td>
-                <td className="py-2 px-4">{item.quantity}</td>
-                <td className="py-2 px-4">{item.description}</td>
-                <td className="py-2 px-4">
-                  <div className="flex gap-2">
+              <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50/80">
+                <td className="px-4 py-3 font-medium text-slate-900">{item.name}</td>
+                <td className="px-4 py-3 text-slate-700">{item.quantity}</td>
+                <td className="px-4 py-3 text-slate-600">{item.description}</td>
+                <td className="px-4 py-3">
+                  <div className="flex flex-wrap gap-2">
                     <Link
                       to={`/item/${item.id}`}
-                      className="bg-sky-500 text-white text-xs py-1 px-3 rounded hover:bg-sky-600 transition"
+                      className="rounded-md bg-sky-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-sky-700"
                     >
                       View
                     </Link>
                     <Link
                       to={`/item/${item.id}/edit`}
-                      className="bg-orange-400 text-white text-xs py-1 px-3 rounded hover:bg-orange-500 transition"
+                      className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-amber-600"
                     >
                       Edit
                     </Link>
                     <button
+                      type="button"
                       onClick={() => handleDeleteItem(item)}
-                      className="bg-red-500 text-white text-xs py-1 px-3 rounded hover:bg-red-600 transition"
+                      className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
                     >
                       Delete
                     </button>
@@ -195,13 +207,15 @@ export const CategoryDetails = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={4} className="py-4 px-4 text-center text-gray-500">
+              <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
                 No items in this category.
               </td>
             </tr>
           )}
         </tbody>
-      </table>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

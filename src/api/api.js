@@ -1,6 +1,21 @@
-const API_BASE = (
-  import.meta.env.VITE_API_URL ?? "http://localhost:3000/api"
-).replace(/\/$/, "");
+/**
+ * API origin: set VITE_API_URL when your API is not the default (see .env.example).
+ * - If VITE_API_URL is set → use it (any absolute URL or a path like "/api").
+ * - Dev server (npm run dev) → http://localhost:3000/api
+ * - Production build (npm run build) → /api on the same host as this site (typical reverse-proxy setup)
+ */
+function resolveApiBase() {
+  const raw = import.meta.env.VITE_API_URL;
+  if (raw != null && String(raw).trim() !== "") {
+    return String(raw).trim().replace(/\/$/, "");
+  }
+  if (import.meta.env.DEV) {
+    return "http://localhost:3000/api";
+  }
+  return "/api";
+}
+
+const API_BASE = resolveApiBase();
 
 function errorMessageFromHtml(text) {
   const preMatch = text.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);

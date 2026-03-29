@@ -8,19 +8,13 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 
-
 #copy package files
 COPY package.json  pnpm-lock.yaml* ./
 
 #install dependecies
-RUN pnpm install --frozen-lockfile --prefer-offline
+RUN pnpm install --frozen-lockfile
 
-# Vite loads .env, .env.production, .env.local, etc. during `pnpm run build`.
-# Copy these from the build context (not listed in .dockerignore). At least
-# `.env.example` matches `.env*` so this layer succeeds even without a custom .env.
-COPY .env* ./
-
-#copying application code
+#copying application code (build embeds /api — no env file required for Docker)
 COPY . .
 
 #build the application

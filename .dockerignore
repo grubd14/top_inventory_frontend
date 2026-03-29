@@ -1,0 +1,6 @@
+# Keep build context small; do not ignore .env / .env.production — Vite needs them at build time.
+node_modules
+dist
+.git
+.gitignore
+*.log

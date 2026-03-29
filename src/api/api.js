@@ -1,12 +1,18 @@
 /**
  * Same path in dev and prod: `/api/...` (relative to the page origin).
  * - `npm run dev`: Vite proxies `/api` → http://localhost:3000 (see vite.config.js).
- * - Docker + Caddy: serve `dist` and reverse_proxy `/api` to your API container.
- * Override only if the API is on another host: VITE_API_URL=https://...
+ * - Production: never use a build-time URL that points at localhost — that causes the
+ *   browser on your VPS to call localhost:3000 (wrong machine). We ignore that here.
+ * - Docker + Caddy: reverse_proxy `/api` to the API; no VITE_* needed.
+ * Optional: VITE_API_URL=https://api.otherhost.com/api for a separate API host.
  */
-const API_BASE = (
-  import.meta.env.VITE_API_URL?.trim() || "/api"
-).replace(/\/$/, "");
+const API_BASE = (() => {
+  let raw = import.meta.env.VITE_API_URL?.trim() ?? "";
+  if (import.meta.env.PROD && /localhost|127\.0\.0\.1/i.test(raw)) {
+    raw = "";
+  }
+  return (raw || "/api").replace(/\/$/, "");
+})();
 
 function errorMessageFromHtml(text) {
   const preMatch = text.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);

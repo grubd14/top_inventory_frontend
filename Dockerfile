@@ -27,5 +27,8 @@ WORKDIR /app
 
 COPY --from=builder /app/dist  ./dist
 
-# Keep container running (Caddy will serve the files)
-CMD ["tail", "-f", "/dev/null"]
+# Install serve and run
+RUN npm install -g serve
+
+# Run serve with SPA mode
+CMD ["serve", "-l", "5173", "-s", "dist"]

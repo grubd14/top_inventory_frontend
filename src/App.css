@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   body {
     @apply bg-slate-50 text-slate-900 antialiased;
+  }
+  .dark body {
+    @apply bg-slate-900 text-white;
   }
 }

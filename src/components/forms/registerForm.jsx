@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "/src/api/api";
+import { notifyAuthChanged } from "/src/lib/auth";
 
 export const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ export const RegisterForm = () => {
           role: "user",
         };
         localStorage.setItem("user", JSON.stringify(userToStore));
+        notifyAuthChanged();
         navigate("/category");
       }
     } catch (err) {
@@ -60,18 +62,18 @@ export const RegisterForm = () => {
     <div>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
             {error}
           </div>
         )}
 
         {/* Username */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-semibold" htmlFor="username">
+          <label className="text-sm font-semibold dark:text-slate-300" htmlFor="username">
             Username
           </label>
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
             type="text"
             placeholder="Choose a username"
             id="username"
@@ -85,11 +87,11 @@ export const RegisterForm = () => {
 
         {/* Password */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-semibold" htmlFor="password">
+          <label className="text-sm font-semibold dark:text-slate-300" htmlFor="password">
             Password
           </label>
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
             type="password"
             id="password"
             name="password"
@@ -102,7 +104,7 @@ export const RegisterForm = () => {
         </div>
 
         {/* Info Message */}
-        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-3 py-2 rounded text-sm">
+        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-3 py-2 rounded text-sm dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300">
           You are registering as a regular user. Administrators must be assigned
           by the system.
         </div>

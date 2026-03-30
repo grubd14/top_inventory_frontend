@@ -76,16 +76,16 @@ export const AddItem = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-slate-50 px-4 py-10">
-      <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-800">
+    <div className="flex min-h-screen flex-col items-center bg-slate-50 px-4 py-10 dark:bg-slate-900">
+      <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-800 dark:text-white">
         Add item
       </h1>
-      <div className="w-full max-w-md rounded-2xl border border-slate-200/80 bg-white p-6 shadow-lg shadow-slate-200/50">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200/80 bg-white p-6 shadow-lg shadow-slate-200/50 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50">
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             {error && (
               <div
-                className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800"
+                className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400"
                 role="alert"
               >
                 {error}
@@ -93,14 +93,14 @@ export const AddItem = () => {
             )}
 
             <div>
-              <label htmlFor="itemName" className="mb-2 block text-sm font-medium text-slate-700">
+              <label htmlFor="itemName" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Item name <span className="text-red-500">*</span>
               </label>
               <input
                 id="itemName"
                 name="name"
                 type="text"
-                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 placeholder="Name"
                 value={formData.name}
                 onChange={handleChange}
@@ -112,14 +112,14 @@ export const AddItem = () => {
             <div>
               <label
                 htmlFor="description"
-                className="mb-2 block text-sm font-medium text-slate-700"
+                className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Description
               </label>
               <textarea
                 id="description"
                 name="description"
-                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 placeholder="Optional"
                 rows={3}
                 value={formData.description}
@@ -129,14 +129,14 @@ export const AddItem = () => {
             </div>
 
             <div>
-              <label htmlFor="quantity" className="mb-2 block text-sm font-medium text-slate-700">
+              <label htmlFor="quantity" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Quantity <span className="text-red-500">*</span>
               </label>
               <input
                 id="quantity"
                 name="quantity"
                 type="number"
-                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 placeholder="0"
                 min="0"
                 value={formData.quantity}
@@ -149,14 +149,14 @@ export const AddItem = () => {
             <div>
               <label
                 htmlFor="category_id"
-                className="mb-2 block text-sm font-medium text-slate-700"
+                className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Category <span className="text-red-500">*</span>
               </label>
               <select
                 id="category_id"
                 name="category_id"
-                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+                className="w-full rounded-lg border border-slate-300 p-2.5 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 value={formData.category_id}
                 onChange={handleChange}
                 disabled={isLoading}
@@ -181,7 +181,7 @@ export const AddItem = () => {
               </button>
               <Link
                 to={categoryId ? `/category/${categoryId}` : "/category"}
-                className="flex flex-1 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50"
+                className="flex flex-1 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
               >
                 Cancel
               </Link>

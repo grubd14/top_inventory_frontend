@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "/src/api/api";
+import { notifyAuthChanged } from "/src/lib/auth";
 
 export const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -44,6 +45,7 @@ export const LoginForm = () => {
           role: formData.role,
         };
         localStorage.setItem("user", JSON.stringify(userToStore));
+        notifyAuthChanged();
         navigate("/category");
       } else {
         throw new Error("Login failed - no user data returned");
@@ -59,18 +61,18 @@ export const LoginForm = () => {
     <div>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
             {error}
           </div>
         )}
 
         {/* Username */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-semibold" htmlFor="username">
+          <label className="text-sm font-semibold dark:text-slate-300" htmlFor="username">
             Username
           </label>
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
             type="text"
             placeholder="Enter your username"
             id="username"
@@ -83,11 +85,11 @@ export const LoginForm = () => {
 
         {/* Password */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-semibold" htmlFor="password">
+          <label className="text-sm font-semibold dark:text-slate-300" htmlFor="password">
             Password
           </label>
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
             type="password"
             id="password"
             name="password"
@@ -99,8 +101,8 @@ export const LoginForm = () => {
         </div>
 
         {/* Role Selection */}
-        <fieldset className="border rounded-lg p-3">
-          <legend className="text-sm font-semibold">Select your role:</legend>
+        <fieldset className="border rounded-lg p-3 dark:border-slate-600">
+          <legend className="text-sm font-semibold dark:text-slate-300">Select your role:</legend>
           <div className="flex justify-center gap-6 mt-2">
             <div className="flex items-center">
               <input
@@ -112,7 +114,7 @@ export const LoginForm = () => {
                 onChange={handleChange}
                 disabled={isLoading}
               />
-              <label htmlFor="admin" className="ml-2 cursor-pointer">
+              <label htmlFor="admin" className="ml-2 cursor-pointer dark:text-slate-300">
                 Admin
               </label>
             </div>
@@ -126,7 +128,7 @@ export const LoginForm = () => {
                 onChange={handleChange}
                 disabled={isLoading}
               />
-              <label htmlFor="user" className="ml-2 cursor-pointer">
+              <label htmlFor="user" className="ml-2 cursor-pointer dark:text-slate-300">
                 User
               </label>
             </div>

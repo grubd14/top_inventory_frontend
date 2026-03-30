@@ -106,35 +106,35 @@ export const EditItem = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <p className="text-lg text-gray-600">Loading item...</p>
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-slate-900">
+        <p className="text-lg text-gray-600 dark:text-slate-400">Loading item...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50 py-8">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-lg">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50 py-8 dark:bg-slate-900">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-lg dark:bg-slate-800">
         <div className="p-6">
-          <h1 className="text-3xl font-semibold text-center mb-6">Edit Item</h1>
+          <h1 className="text-3xl font-semibold text-center mb-6 dark:text-white">Edit Item</h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
                 {error}
               </div>
             )}
 
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block font-medium mb-2">
+              <label htmlFor="name" className="block font-medium mb-2 dark:text-slate-300">
                 Item Name: <span className="text-red-500">*</span>
               </label>
               <input
                 id="name"
                 name="name"
                 type="text"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 placeholder="Enter item name"
                 value={formData.name}
                 onChange={handleChange}
@@ -145,13 +145,13 @@ export const EditItem = () => {
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block font-medium mb-2">
+              <label htmlFor="description" className="block font-medium mb-2 dark:text-slate-300">
                 Description:
               </label>
               <textarea
                 id="description"
                 name="description"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 placeholder="Enter item description"
                 rows={3}
                 value={formData.description}
@@ -162,7 +162,7 @@ export const EditItem = () => {
 
             {/* Quantity */}
             <div>
-              <label htmlFor="quantity" className="block font-medium mb-2">
+              <label htmlFor="quantity" className="block font-medium mb-2 dark:text-slate-300">
                 Quantity: <span className="text-red-500">*</span>
               </label>
               <input
@@ -170,7 +170,7 @@ export const EditItem = () => {
                 name="quantity"
                 type="number"
                 min="0"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 placeholder="0"
                 value={formData.quantity}
                 onChange={handleChange}
@@ -181,13 +181,13 @@ export const EditItem = () => {
 
             {/* Category */}
             <div>
-              <label htmlFor="category_id" className="block font-medium mb-2">
+              <label htmlFor="category_id" className="block font-medium mb-2 dark:text-slate-300">
                 Category: <span className="text-red-500">*</span>
               </label>
               <select
                 id="category_id"
                 name="category_id"
-                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-white"
                 value={formData.category_id}
                 onChange={handleChange}
                 disabled={isSaving}

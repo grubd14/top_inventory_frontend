@@ -154,6 +154,14 @@ export async function getItemById(id) {
   return handleResponse(response);
 }
 
+//search items
+export async function searchItems(query) {
+  const response = await fetch(`${API_BASE}/item/search?q=${encodeURIComponent(query)}`, {
+    credentials: "include",
+  });
+  return handleResponse(response);
+}
+
 //add item
 export async function addItem(body) {
   const response = await fetch(`${API_BASE}/item/add`, {

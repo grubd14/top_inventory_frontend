@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getCategoriesById, deleteCategory, deleteItem } from "/src/api/api";
 
+const LOW_STOCK_THRESHOLD = 5;
+
 export const CategoryDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -67,7 +69,6 @@ export const CategoryDetails = () => {
 
     try {
       await deleteItem(item.id);
-      // Remove the deleted item from local state without refetching
       setCategory((prev) => ({
         ...prev,
         items: prev.items.filter((i) => i.id !== item.id),
@@ -79,21 +80,21 @@ export const CategoryDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-8">
-        <div className="text-center text-lg text-slate-600">Loading…</div>
+      <div className="min-h-screen bg-slate-50 p-8 dark:bg-slate-900">
+        <div className="text-center text-lg text-slate-600 dark:text-slate-400">Loading…</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 p-8">
-        <div className="mb-4 text-lg text-red-700" role="alert">
+      <div className="min-h-screen bg-slate-50 p-8 dark:bg-slate-900">
+        <div className="mb-4 text-lg text-red-700 dark:text-red-400" role="alert">
           {error}
         </div>
         <Link
           to="/category"
-          className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700"
+          className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700 dark:text-sky-400"
         >
           Back to categories
         </Link>
@@ -103,11 +104,11 @@ export const CategoryDetails = () => {
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-slate-50 p-8">
-        <div className="mb-4 text-lg text-slate-700">Category not found.</div>
+      <div className="min-h-screen bg-slate-50 p-8 dark:bg-slate-900">
+        <div className="mb-4 text-lg text-slate-700 dark:text-slate-300">Category not found.</div>
         <Link
           to="/category"
-          className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700"
+          className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 hover:text-sky-700 dark:text-sky-400"
         >
           Back to categories
         </Link>
@@ -116,12 +117,12 @@ export const CategoryDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
+    <div className="min-h-screen bg-slate-50 p-8 dark:bg-slate-900">
       <div className="mx-auto flex max-w-6xl flex-col items-start">
-        <h1 className="mb-2 w-full text-center text-3xl font-bold tracking-tight text-slate-800">
+        <h1 className="mb-2 w-full text-center text-3xl font-bold tracking-tight text-slate-800 dark:text-white">
           {category.name}
         </h1>
-        <p className="mb-8 w-full text-center text-slate-600">
+        <p className="mb-8 w-full text-center text-slate-600 dark:text-slate-400">
           {category.description || "No description"}
         </p>
         <div className="mb-8 flex w-full flex-wrap gap-3">
@@ -152,23 +153,23 @@ export const CategoryDetails = () => {
           </Link>
         </div>
 
-        <h2 className="mb-4 w-full text-2xl font-bold text-slate-800">
+        <h2 className="mb-4 w-full text-2xl font-bold text-slate-800 dark:text-white">
           Items in this category
         </h2>
-        <div className="w-full overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
+        <div className="w-full overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-100/80">
-            <th className="px-4 py-3 text-left font-semibold text-slate-700">
+          <tr className="border-b border-slate-200 bg-slate-100/80 dark:border-slate-700 dark:bg-slate-700/50">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">
               Name
             </th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-700">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">
               Quantity
             </th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-700">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">
               Description
             </th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-700">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">
               Actions
             </th>
           </tr>
@@ -176,10 +177,10 @@ export const CategoryDetails = () => {
         <tbody>
           {category.items && category.items.length > 0 ? (
             category.items.map((item) => (
-              <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50/80">
-                <td className="px-4 py-3 font-medium text-slate-900">{item.name}</td>
-                <td className="px-4 py-3 text-slate-700">{item.quantity}</td>
-                <td className="px-4 py-3 text-slate-600">{item.description}</td>
+              <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50/80 dark:border-slate-700 dark:hover:bg-slate-700/50">
+                <td className="px-4 py-3 font-medium text-slate-900 dark:text-white">{item.name}</td>
+                <td className={`px-4 py-3 ${item.quantity < LOW_STOCK_THRESHOLD ? "text-amber-600 dark:text-amber-400" : "text-slate-700 dark:text-slate-300"}`}>{item.quantity}</td>
+                <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{item.description}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <Link
@@ -207,7 +208,7 @@ export const CategoryDetails = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
+              <td colSpan={4} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
                 No items in this category.
               </td>
             </tr>

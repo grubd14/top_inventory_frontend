@@ -33,7 +33,6 @@ export const CategoryPage = () => {
 
     try {
       await deleteCategory(category.id);
-      // Remove from local state without refetching
       setCategories((prev) => prev.filter((c) => c.id !== category.id));
     } catch (err) {
       setError(
@@ -44,8 +43,8 @@ export const CategoryPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-10">
-        <div className="text-center text-lg text-slate-600">
+      <div className="min-h-screen bg-slate-50 p-10 dark:bg-slate-900">
+        <div className="text-center text-lg text-slate-600 dark:text-slate-400">
           Loading categories…
         </div>
       </div>
@@ -54,10 +53,10 @@ export const CategoryPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 p-10">
+      <div className="min-h-screen bg-slate-50 p-10 dark:bg-slate-900">
         <div className="mx-auto max-w-6xl">
           <div
-            className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800"
+            className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400"
             role="alert"
           >
             {error}
@@ -75,14 +74,14 @@ export const CategoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-10">
+    <div className="min-h-screen bg-slate-50 p-10 dark:bg-slate-900">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="inline-block border-b-4 border-sky-500 pb-2 text-3xl font-bold text-slate-800">
+            <h2 className="inline-block border-b-4 border-sky-500 pb-2 text-3xl font-bold text-slate-800 dark:border-sky-400 dark:text-white">
               Categories
             </h2>
-            <p className="mt-2 text-slate-600">
+            <p className="mt-2 text-slate-600 dark:text-slate-400">
               Manage categories and the items inside them.
             </p>
           </div>
@@ -95,27 +94,27 @@ export const CategoryPage = () => {
         </div>
 
         {categories.length > 0 ? (
-          <div className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-100/80 text-left">
-                  <th className="p-4 font-semibold text-slate-700">Name</th>
-                  <th className="p-4 font-semibold text-slate-700">
+                <tr className="border-b border-slate-200 bg-slate-100/80 text-left dark:border-slate-700 dark:bg-slate-700/50">
+                  <th className="p-4 font-semibold text-slate-700 dark:text-slate-300">Name</th>
+                  <th className="p-4 font-semibold text-slate-700 dark:text-slate-300">
                     Description
                   </th>
-                  <th className="p-4 font-semibold text-slate-700">Actions</th>
+                  <th className="p-4 font-semibold text-slate-700 dark:text-slate-300">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {categories.map((category) => (
                   <tr
                     key={category.id}
-                    className="border-b border-slate-100 transition hover:bg-slate-50/80"
+                    className="border-b border-slate-100 transition hover:bg-slate-50/80 dark:border-slate-700 dark:hover:bg-slate-700/50"
                   >
-                    <td className="p-4 font-medium text-slate-900">
+                    <td className="p-4 font-medium text-slate-900 dark:text-white">
                       {category.name}
                     </td>
-                    <td className="p-4 text-sm text-slate-600">
+                    <td className="p-4 text-sm text-slate-600 dark:text-slate-400">
                       {category.description || "No description"}
                     </td>
                     <td className="p-4">
@@ -153,8 +152,8 @@ export const CategoryPage = () => {
             </table>
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
-            <p className="mb-4 text-lg text-slate-600">
+          <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm dark:border-slate-600 dark:bg-slate-800">
+            <p className="mb-4 text-lg text-slate-600 dark:text-slate-400">
               No categories yet. Create one to get started.
             </p>
             <Link
